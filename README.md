@@ -24,7 +24,7 @@ npm install
 4. **kubernetes cluster 시크릿 추가** (jwt secret key) (로컬 에서만 쓸 key, 밑에 asdf 가 키입니다. GCP 쓸때 나중에 거기선 따로 설정해야 할 것 같습니다.)
 
 ```
-kubectl create secret generic jwt-secrets —from-literal=JWT_KEY=asdf
+kubectl create secret generic jwt-secrets -—from-literal=JWT_KEY=asdf
 ```
 
 5. **skaffold.yaml 있는 path에서**
