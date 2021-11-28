@@ -1,0 +1,32 @@
+[
+    {
+        "orderId": "user1.konkuk.ac.kr",
+        "amount": 1,
+        "stripeId": "user6.konkuk.ac.kr"
+    },
+    {
+        "orderId": "user2.konkuk.ac.kr",
+        "amount": 2,
+        "stripeId": "user5.konkuk.ac.kr"
+    },
+    {
+        "orderId": "user3.konkuk.ac.kr",
+        "amount": 3,
+        "stripeId": "user4.konkuk.ac.kr"
+    },
+    {
+        "orderId": "user4.konkuk.ac.kr",
+        "amount": 4,
+        "stripeId": "user3.konkuk.ac.kr"
+    },
+    {
+        "orderId": "user5.konkuk.ac.kr",
+        "amount": 5,
+        "stripeId": "user2.konkuk.ac.kr"
+    },
+    {
+        "orderId": "user6.konkuk.ac.kr",
+        "amount": 6,
+        "stripeId": "user1.konkuk.ac.kr"
+    }
+]

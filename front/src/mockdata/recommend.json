@@ -1,0 +1,26 @@
+[
+    {
+        "userId": "user1.konkuk.ac.kr",
+        "productId": 1
+    },
+    {
+        "userId": "user2.konkuk.ac.kr",
+        "productId": 2
+    },
+    {
+        "userId": "user3.konkuk.ac.kr",
+        "productId": 3
+    },
+    {
+        "userId": "user4.konkuk.ac.kr",
+        "productId": 4
+    },
+    {
+        "userId": "user5.konkuk.ac.kr",
+        "productId": 5
+    },
+    {
+        "userId": "user6.konkuk.ac.kr",
+        "productId": 6
+    }
+]

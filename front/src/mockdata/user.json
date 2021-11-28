@@ -1,0 +1,26 @@
+[
+    {
+        "email": "user1.konkuk.ac.kr",
+        "password": "1"
+    },
+    {
+        "email": "user2.konkuk.ac.kr",
+        "password": "2"
+    },
+    {
+        "email": "user3.konkuk.ac.kr",
+        "password": "3"
+    },
+    {
+        "email": "user4.konkuk.ac.kr",
+        "password": "4"
+    },
+    {
+        "email": "user5.konkuk.ac.kr",
+        "password": "5"
+    },
+    {
+        "email": "user6.konkuk.ac.kr",
+        "password": "6"
+    }
+]

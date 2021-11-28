@@ -1,0 +1,38 @@
+[
+    {
+        "userID": "user1.konkuk.ac.kr",
+        "status": "true",
+        "tickedId": 1,
+        "expires": "2021-11-28"
+    },
+    {
+        "userID": "user2.konkuk.ac.kr",
+        "status": "true",
+        "tickedId": 2,
+        "expires": "2021-11-28"
+    },
+    {
+        "userID": "user3.konkuk.ac.kr",
+        "status": "true",
+        "tickedId": 3,
+        "expires": "2021-11-28"
+    },
+    {
+        "userID": "user4.konkuk.ac.kr",
+        "status": "true",
+        "tickedId": 4,
+        "expires": "2021-11-28"
+    },
+    {
+        "userID": "user5.konkuk.ac.kr",
+        "status": "true",
+        "tickedId": 5,
+        "expires": "2021-11-28"
+    },
+    {
+        "userID": "user6.konkuk.ac.kr",
+        "status": "true",
+        "tickedId": 6,
+        "expires": "2021-11-28"
+    }
+]

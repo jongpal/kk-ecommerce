@@ -1,0 +1,32 @@
+[
+    {
+        "userId": 1,
+        "productId": 1,
+        "ratings": 5
+    },
+    {
+        "userId": 2,
+        "productId": 2,
+        "ratings": 5
+    },
+    {
+        "userId": 3,
+        "productId": 3,
+        "ratings": 5
+    },
+    {
+        "userId": 4,
+        "productId": 4,
+        "ratings": 5
+    },
+    {
+        "userId": 5,
+        "productId": 5,
+        "ratings": 5
+    },
+    {
+        "userId": 6,
+        "productId": 6,
+        "ratings": 5
+    }
+]

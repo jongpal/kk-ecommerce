@@ -1,0 +1,38 @@
+[
+    {
+        "title": 1,
+        "price": 100,
+        "amount": 1,
+        "userId": "user1.konkuk.ac.kr"
+    },
+    {
+        "title": 2,
+        "price": 200,
+        "amount": 2,
+        "userId": "user2.konkuk.ac.kr"
+    },
+    {
+        "title": 3,
+        "price": 300,
+        "amount": 3,
+        "userId": "user3.konkuk.ac.kr"
+    },
+    {
+        "title": 4,
+        "price": 400,
+        "amount": 4,
+        "userId": "user4.konkuk.ac.kr"
+    },
+    {
+        "title": 5,
+        "price": 500,
+        "amount": 5,
+        "userId": "user5.konkuk.ac.kr"
+    },
+    {
+        "title": 6,
+        "price": 600,
+        "amount": 6,
+        "userId": "user6.konkuk.ac.kr"
+    }
+]
