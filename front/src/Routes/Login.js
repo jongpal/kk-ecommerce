@@ -22,20 +22,20 @@ function Login() {
   }
 
   const loginClick =async()=>{
-    // await axios.post('http://localhost:3001/api/users/signin',{
-    //   email:Id,
-    //   password:Pw
-    // },{withCredentials:true})
-    // .then((response)=>{
-    //   if(response.status ===200){
-    //     dispatch(goLogin(Id));
-    //     navigate('/home');
-    //   }else{
-    //     alert("login error");
-    //   }
-    // });
-    dispatch(goLogin(Id));
-    navigate('/home');
+    await axios.post('https://35.200.45.35/api/users/signin',{
+      email:Id,
+      password:Pw
+    },{withCredentials:true})
+    .then((response)=>{
+      if(response.status ===200){
+        dispatch(goLogin(Id));
+        navigate('/home');
+      }else{
+        alert("login error");
+      }
+    });
+    // dispatch(goLogin(Id));
+    // navigate('/home');
   }
 
   const signinClick = async()=>{

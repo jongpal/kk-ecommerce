@@ -17,9 +17,10 @@ const Header = () => {
     }
 
     async function GoLogout() {
-      // await axios.post('http://localhost:3001/api/users/signout',{
-      //   withCredentials:true
-      // }).then((response)=>{
+      await axios.post('https://35.200.45.35/api/users/signout',{
+        withCredentials:true
+      });
+      // .then((response)=>{
       //   if(response.status ===200){
       //     dispatch(goLogout());
       //     navigate('/home');
