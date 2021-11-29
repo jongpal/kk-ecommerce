@@ -16,14 +16,14 @@ spec:
     metadata:
       labels:
         app: orders
-      spec:
-        containers:
-          - name: orders
-            image: "gcr.io/chabunsi-project/orders"
-            resources:
-              requests:
-                cpu: 500m
-                memory: 1G
-              limits:
-                cpu: 1
-                memory: 1.5G
+    spec:
+      containers:
+        - name: orders
+          image: "gcr.io/chabunsi-project/orders"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1G
+            limits:
+              cpu: 1
+              memory: 1.5G

@@ -16,25 +16,25 @@ spec:
     metadata:
       labels:
         app: products
-      spec:
-        containers:
-          - name: products
-            image: "gcr.io/chabunsi-project/products"
-            env:
-              - name: MONGO_URI
-                value: 'mongodb://mongo:27017/products'
-              - name: JWT_KEY
-                valueFrom:
-                  secretKeyRef:
-                    name: jwt-secrets
-                    key: JWT_KEY
-            resources:
-              requests:
-                cpu: 500m
-                memory: 1G
-              limits:
-                cpu: 1
-                memory: 1.5G
+    spec:
+      containers:
+        - name: products
+          image: "gcr.io/chabunsi-project/products"
+          env:
+            - name: MONGO_URI
+              value: 'mongodb://mongo:27017/products'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: JWT_KEY
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1G
+            limits:
+              cpu: 1
+              memory: 1.5G
 ---
 apiVersion: v1
 kind: Service
