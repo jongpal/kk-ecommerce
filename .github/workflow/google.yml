@@ -33,7 +33,7 @@ jobs:
 
     # configure docker
       - run: |-
-        gcloud --quiet auth configure-docker
+          gcloud --quiet auth configure-docker
 
     # get GKE credentials
       - uses: google-github-actions/get-gke-credentials@v0.2.1
