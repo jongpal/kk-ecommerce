@@ -5,6 +5,16 @@ import { NotFoundError } from '@jong_ecommerce/common';
 
 const router = express.Router();
 
+// for api test
+router.get(
+  '/api/products/success',
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).send({
+      status: 'success',
+    });
+  }
+);
+
 router.get(
   '/api/products',
   async (req: Request, res: Response, next: NextFunction) => {
