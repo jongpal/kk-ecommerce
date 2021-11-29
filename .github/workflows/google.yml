@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout
-          uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       # Setup gcloud CLI
       - uses: google-github-actions/setup-gcloud@v0.2.0
@@ -45,49 +45,49 @@ jobs:
 
       # Build the Docker image
       - name: Build
-          run: |-
-            cd auth
-            docker build \
-              -t "gcr.io/$PROJECT_ID/$AUTH:latest" \
-              --build-arg GITHUB_SHA="$GITHUB_SHA" \
-              --build-arg GITHUB_REF="$GITHUB_REF" \
-              .
-            cd ..
-            cd orders
-            docker build \
-              -t "gcr.io/$PROJECT_ID/$ORDERS:latest" \
-              --build-arg GITHUB_SHA="$GITHUB_SHA" \
-              --build-arg GITHUB_REF="$GITHUB_REF" \
-              .
-            cd ..
-            cd products
-            docker build \
-              -t "gcr.io/$PROJECT_ID/$PRODUCTS:latest" \
-              --build-arg GITHUB_SHA="$GITHUB_SHA" \
-              --build-arg GITHUB_REF="$GITHUB_REF" \
-              .
-            cd ..
+        run: |-
+          cd auth
+          docker build \
+            -t "gcr.io/$PROJECT_ID/$AUTH:latest" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
+          cd ..
+          cd orders
+          docker build \
+            -t "gcr.io/$PROJECT_ID/$ORDERS:latest" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
+          cd ..
+          cd products
+          docker build \
+            -t "gcr.io/$PROJECT_ID/$PRODUCTS:latest" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
+          cd ..
 
       # Push docker image to GCR
       - name: Publish
-          run: |-
-            docker push "gcr.io/$PROJECT_ID/$AUTH"
-            docker push "gcr.io/$PROJECT_ID/$ORDERS"
-            docker push "gcr.io/$PROJECT_ID/$PRODUCTS"
+        run: |-
+          docker push "gcr.io/$PROJECT_ID/$AUTH"
+          docker push "gcr.io/$PROJECT_ID/$ORDERS"
+          docker push "gcr.io/$PROJECT_ID/$PRODUCTS"
 
       # Deploy to k8s
       - name: Deploy
-          run: |-
-            cd config
-            kubectl apply -f auth_deployment.yaml
-            kubectl apply -f orders_deployment.yaml
-            kubectl apply -f products_deployment.yaml
-            kubectl rollout status deployment/$AUTH
-            kubectl get services -o wide
-            kubectl rollout status deployment/$ORDERS
-            kubectl get services -o wide
-            kubectl rollout status deployment/$PRODUCTS
-            kubectl get services -o wide
+        run: |-
+          cd config
+          kubectl apply -f auth_deployment.yaml
+          kubectl apply -f orders_deployment.yaml
+          kubectl apply -f products_deployment.yaml
+          kubectl rollout status deployment/$AUTH
+          kubectl get services -o wide
+          kubectl rollout status deployment/$ORDERS
+          kubectl get services -o wide
+          kubectl rollout status deployment/$PRODUCTS
+          kubectl get services -o wide
 
 
 
