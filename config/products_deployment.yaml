@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products
+spec:
+  selector:
+    matchLabels:
+      app: products
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: products
+      spec:
+        containers:
+          - name: products
+            image: "gcr.io/chabunsi-project/products"
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1G
+              limits:
+                cpu: 1
+                memory: 1.5G
