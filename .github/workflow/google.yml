@@ -23,7 +23,7 @@ jobs:
 
     steps:
     - name: Checkout
-      users: actions/checkout@v2
+      uses: actions/checkout@v2
 
     # set gcloud cli
     - uses: google-github-actions/setup-gcloud@v0.2.0
