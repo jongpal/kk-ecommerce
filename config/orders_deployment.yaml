@@ -20,13 +20,3 @@ spec:
       containers:
         - name: orders
           image: "gcr.io/chabunsi-project/orders"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 180
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            initialDelaySeconds: 180
