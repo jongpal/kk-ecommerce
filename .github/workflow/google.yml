@@ -40,6 +40,7 @@ jobs:
 
             # configure docker
             - run: |-
+                echo Hello
                 gcloud --quiet auth configure-docker
 
     # Build the Docker image
