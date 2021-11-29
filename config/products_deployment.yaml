@@ -20,6 +20,14 @@ spec:
         containers:
           - name: products
             image: "gcr.io/chabunsi-project/products"
+            env:
+              - name: MONGO_URI
+                value: 'mongodb://mongo:27017/products'
+              - name: JWT_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: jwt-secrets
+                    key: JWT_KEY
             resources:
               requests:
                 cpu: 500m
@@ -27,3 +35,16 @@ spec:
               limits:
                 cpu: 1
                 memory: 1.5G
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-srv
+spec:
+  selector:
+    app: products
+  ports:
+    - name: products
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
