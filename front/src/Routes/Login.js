@@ -22,7 +22,7 @@ function Login() {
   }
 
   const loginClick =async()=>{
-    await axios.post('https://35.200.45.35/api/users/signin',{
+    await axios.post('http://35.200.45.35/api/users/signin',{
       email:Id,
       password:Pw
     },{withCredentials:true})
@@ -39,17 +39,17 @@ function Login() {
   }
 
   const signinClick = async()=>{
-    // await axios.post('http://localhost:3001/api/users/signup',{
-    //   email:Id,
-    //   password:Pw
-    // },{withCredentials:true})
-    // .then((response)=>{
-    //   if(response.status ===201){
-    //     alert("successed");
-    //   }else{
-    //     alert("signup error");
-    //   }
-    // });
+    await axios.post('http://35.200.45.35/api/users/signup',{
+      email:Id,
+      password:Pw
+    },{withCredentials:true})
+    .then((response)=>{
+      if(response.status ===201){
+        alert("successed");
+      }else{
+        alert("signup error");
+      }
+    });
     navigate('/home');
   }
 
@@ -62,7 +62,7 @@ function Login() {
       PW
       <input onChange = {PwChange} type='password'></input>
       <button onClick = {loginClick}>login</button>
-      <button onClick = {signinClick}>signIn</button>
+      <button onClick = {signinClick}>signUp</button>
     </div>
     </>
     );

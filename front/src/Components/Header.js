@@ -17,7 +17,7 @@ const Header = () => {
     }
 
     async function GoLogout() {
-      await axios.post('https://35.200.45.35/api/users/signout',{
+      await axios.post('http://35.200.45.35/api/users/signout',{
         withCredentials:true
       });
       // .then((response)=>{
