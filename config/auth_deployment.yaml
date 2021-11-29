@@ -20,6 +20,16 @@ spec:
       containers:
         - name: auth
           image: "gcr.io/chabunsi-project/auth"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 180
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 180
           env:
             - name: MONGO_URI
               value: "mongodb://mongo:27017/auth"
