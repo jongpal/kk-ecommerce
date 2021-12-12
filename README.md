@@ -1,6 +1,6 @@
 # 차분시 이커머스
 
-- 현재 auth, products api들까지 작성이되었습니다.
+- 현재 auth, products, order api들까지 작성이되었습니다.
 - 맥환경에서 실행했습니다
 
 1. https://kubernetes.github.io/ingress-nginx/deploy/#quick-start 여기에 나와있는 아래 코맨드 입력해서 ingress-controller 설치
@@ -49,5 +49,14 @@ skaffold dev
 
 - GET /api/products : 모든 상품정보
 - GET /api/products/:id : id로 상품 검색
-- POST /api/products : 상품 생성, body 들어갈 내용은 src/routes/create.ts 참고
+- POST /api/products : 상품 생성, body 들어갈 내용은 products/src/routes/create.ts 참고
 - PUT /api/products/:id : 상품 업데이트, src/routes/update.ts 참고
+
+---
+
+**orders**
+
+- GET /api/orders : 현재 인증된(로그인된) 유저의 _모든_ 주문 정보
+- GET /api/orders/:id : 현재 인증된 유저의 특정 주문 정보
+- POST /api/orders : 주문 생성, body 들어갈 내용은 상품의 id (orders/src/routes/create.ts 참고)
+- PATCH /api/orders/:id : 주문 삭제, body 들어갈 내용 위와 동일.
