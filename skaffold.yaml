@@ -8,27 +8,35 @@ build:
   local:
     push: false
   artifacts:
-    - image: jongpal/auth
+    - image: chabunsi/auth
       context: auth
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: 'src/**/*.ts'
             dest: .
-    - image: jongpal/products
+    - image: chabunsi/products
       context: products
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: 'src/**/*.ts'
             dest: .
-    - image: jongpal/front
-      context: front
+    - image: chabunsi/orders
+      context: orders
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: 'src/**/*.ts'
             dest: .
+    # - image: chabunsi/front
+    #   context: front
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: 'src/**/*.ts'
+    #         dest: .

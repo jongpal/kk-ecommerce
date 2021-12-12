@@ -25,11 +25,18 @@ spec:
                 name: products-srv
                 port:
                   number: 3000
+          - path: /api/orders/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: orders-srv
+                port:
+                  number: 3000
           # client service to be implemented
           # - path: /?(.*)
           #   pathType: Prefix
           #   backend:
           #     service:
-          #       name: client-srv
+          #       name: front-srv
           #       port:
           #         number: 3000

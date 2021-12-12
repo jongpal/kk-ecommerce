@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import { Product } from '../../models/products';
+import { producerSingleton } from './../../producerSingleton';
 
 it('fails if not authenticated user tries to create a product', async () => {
   const response = await request(app).post('/api/products').send({
@@ -80,4 +81,23 @@ it('correctly creates a product with valid inputs and authentication and check c
   expect(products.length).toEqual(2);
   expect(products[0].amount).toEqual(1);
   expect(products[1].amount).toEqual(2);
+});
+
+it('publishes product-created event', async () => {
+  const cookie = (await global.signin())[0];
+
+  // first, title
+  await request(app)
+    .post('/api/products')
+    .set('Cookie', cookie)
+    .send({
+      title: 'asdasd',
+      price: 100,
+      description: 'bed',
+      amount: 2,
+    })
+    .expect(201); // RequestValidationError
+  expect(producerSingleton.producer.connect).toHaveBeenCalled();
+  expect(producerSingleton.producer.send).toHaveBeenCalled();
+  expect(producerSingleton.producer.disconnect).toHaveBeenCalled();
 });

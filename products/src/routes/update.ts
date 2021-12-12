@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { body } from 'express-validator';
+// import { body } from 'express-validator';
 import { Product } from './../models/products';
+import { ProductUpdatedPublisher } from '../events/publishers/product-updated-publisher';
+import { producerSingleton } from './../producerSingleton';
 
 import {
   setCurrentUser,
@@ -21,6 +23,13 @@ router.put(
 
     if (!product) {
       return next(new NotFoundError());
+    }
+
+    // if product is on order, no update allowed
+    if (product.amount === 0) {
+      return next(
+        new BadRequestError('this product is reserved. no update allowed')
+      );
     }
 
     // product's owner's id and current user's id
@@ -46,6 +55,19 @@ router.put(
 
     await product.save();
 
+    const producer = new ProductUpdatedPublisher(
+      producerSingleton.producer,
+      producerSingleton.adminClient
+    );
+
+    await producer.publish({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      userId: product.userId,
+      amount: product.amount,
+    });
     res.status(200).send(product);
   }
 );

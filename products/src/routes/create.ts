@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { body } from 'express-validator';
 import { Product } from './../models/products';
+import { ProductCreatedPublisher } from '../events/publishers/product-created-publisher';
+import { producerSingleton } from './../producerSingleton';
 
 import {
   validateRequest,
@@ -34,6 +36,19 @@ router.post(
       userId: req.currentUser!.id,
     });
     await product.save();
+
+    const producer = new ProductCreatedPublisher(
+      producerSingleton.producer,
+      producerSingleton.adminClient
+    );
+    await producer.publish({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      description: product.description,
+      userId: product.userId,
+      amount: product.amount,
+    });
 
     res.status(201).send(product);
   }

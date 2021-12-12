@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import mongoose from 'mongoose';
 // import { Product } from '../../models/products';
+import { producerSingleton } from './../../producerSingleton';
 
 const createTicket = async (
   title: string = 'product1',
@@ -115,3 +116,34 @@ it('returns 200 and update accordingly if valid inputs are given', async () => {
   expect(response.statusCode).toEqual(200);
   expect(response.body.amount).toEqual(2);
 });
+
+it('publishes product-updated event', async () => {
+  const cookie = (await global.signin())[0];
+  // const id = new mongoose.Types.ObjectId().toHexString();
+
+  const response = await request(app)
+    .post('/api/products')
+    .set('Cookie', cookie)
+    .send({
+      title: 'sdasd',
+      price: 100,
+      description: 'bed',
+      amount: 2,
+    });
+
+  await request(app)
+    .put(`/api/products/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({
+      title: 'dsad',
+      price: 100,
+      description: 'bed',
+      amount: 2,
+    })
+    .expect(200); // RequestValidationError
+  expect(producerSingleton.producer.connect).toHaveBeenCalled();
+  expect(producerSingleton.producer.send).toHaveBeenCalled();
+  expect(producerSingleton.producer.disconnect).toHaveBeenCalled();
+});
+
+it.todo('reject if the product is reserved');
