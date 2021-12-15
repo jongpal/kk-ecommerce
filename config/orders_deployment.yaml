@@ -20,3 +20,6 @@ spec:
       containers:
         - name: orders
           image: "gcr.io/chabunsi-project/orders"
+          resources:
+            requests:
+              cpu: "200m"

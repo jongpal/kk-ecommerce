@@ -28,6 +28,9 @@ spec:
                 secretKeyRef:
                   name: jwt-secrets
                   key: JWT_KEY
+          resources:
+            requests:
+              cpu: "200m"
 ---
 apiVersion: v1
 kind: Service
