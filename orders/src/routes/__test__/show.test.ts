@@ -13,19 +13,21 @@ it('fetches all orders for an particular user', async () => {
   // create total of 4 products ,  product1 : 2, product2: 2
 
   const saveProduct = Product.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     amount: 2,
     title: 'product1',
     price: 10,
     userId: 'some user',
-    version: 0,
+    // version: 0,
   });
   await saveProduct.save();
   const saveProduct2 = Product.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     amount: 2,
     title: 'product2',
     price: 10,
     userId: 'some user2',
-    version: 0,
+    // version: 0,
   });
   await saveProduct2.save();
   // create one order as user 1
@@ -76,11 +78,12 @@ it('fetches a spectific order', async () => {
   let cookie = (await global.signin())[0];
 
   const saveProduct = Product.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     amount: 2,
     title: 'product1',
     price: 10,
     userId: 'some user',
-    version: 0,
+    // version: 0,
   });
   await saveProduct.save();
 
@@ -98,3 +101,5 @@ it('fetches a spectific order', async () => {
 
   expect(response.body.products[0].id).toEqual(saveProduct.id);
 });
+
+it.todo('test paid orders');

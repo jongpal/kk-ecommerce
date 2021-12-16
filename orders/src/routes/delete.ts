@@ -8,7 +8,7 @@ import {
   OrderCancelledEvent,
 } from '@jong_ecommerce/common';
 import { Order } from './../models/orders';
-import { producerSingleton } from '../producerSingleton';
+import { natsConnector } from '../nats-connector';
 import { OrderCancelledPublisher } from '../events/order-cancelled-publisher';
 
 // import { Product } from './../models/products';
@@ -33,21 +33,8 @@ router.patch(
     order.status = OrderStatus.Cancelled;
     await order.save();
 
-    const producer = new OrderCancelledPublisher(
-      producerSingleton.producer,
-      producerSingleton.adminClient
-    );
-    // topic: Topics.OrderCancelled;
-    // value: {
-    //   id: string;
-    //   status: OrderStatus.Cancelled;
-    //   amount: number;
-    //   version: number;
-    //   userId: string;
-    //   product: {
-    //     id: string;
-    //   };
-    // };
+    const producer = new OrderCancelledPublisher(natsConnector.client);
+
     await producer.publish({
       id: order.id,
       status: OrderStatus.Cancelled,

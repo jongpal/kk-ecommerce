@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-expire-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-expire
+  template:
+    metadata:
+      labels:
+        app: order-expire
+    spec:
+      containers:
+        - name: order-expire
+          image: chabunsi/order-expire
+          env:
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: chabunsi-ecommerce
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            # - name: KAFKA_CLIENT_ID
+            #   valueFrom:
+            #     fieldRef:
+            #       fieldPath: metadata.name
+            # - name: KAFKA_ADMIN_ID
+            #   value: 'kafka-admin'
+            # - name: BROKER_1
+            #   value: 'kafka-service:9092'
+            - name: REDIS_HOST
+              value: order-expire-redis-srv

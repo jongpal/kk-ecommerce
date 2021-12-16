@@ -3,7 +3,19 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./dev-config/ingress-srv.yaml
+      - ./dev-config/auth-depl.yaml
+      - ./dev-config/auth-mongo-depl.yaml
+      - ./dev-config/products-depl.yaml
+      - ./dev-config/products-mongo-depl.yaml
+      - ./dev-config/nats-depl.yaml
+      - ./dev-config/orders-depl.yaml
+      - ./dev-config/orders-mongo-depl.yaml
+      - ./dev-config/order-expire-depl.yaml
+      - ./dev-config/order-expire-redis-depl.yaml
+      - ./dev-config/payments-depl.yaml
+      - ./dev-config/payments-mongo-depl.yaml
+
 build:
   local:
     push: false
@@ -26,6 +38,22 @@ build:
             dest: .
     - image: chabunsi/orders
       context: orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: chabunsi/order-expire
+      context: order-expire
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: chabunsi/payments
+      context: payments
       docker:
         dockerfile: Dockerfile
       sync:

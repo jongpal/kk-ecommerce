@@ -16,14 +16,22 @@ spec:
         - name: products
           image: chabunsi/products
           env:
-            - name: KAFKA_CLIENT_ID
+            - name: NATS_URL
+              value: http://nats-srv:4222
+            - name: NATS_CLUSTER_ID
+              value: chabunsi-ecommerce
+            - name: NATS_CLIENT_ID
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: KAFKA_ADMIN_ID
-              value: 'kafka-admin'
-            - name: BROKER_1
-              value: 'kafka-service:9092'
+            # - name: KAFKA_CLIENT_ID
+            #   valueFrom:
+            #     fieldRef:
+            #       fieldPath: metadata.name
+            # - name: KAFKA_ADMIN_ID
+            #   value: 'kafka-admin'
+            # - name: BROKER_1
+            #   value: 'kafka-service:9092'
             - name: MONGO_URI
               value: 'mongodb://products-mongo-srv:27017/products'
             - name: JWT_KEY

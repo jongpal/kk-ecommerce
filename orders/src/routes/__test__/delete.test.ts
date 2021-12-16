@@ -4,18 +4,19 @@ import { Product } from './../../models/products';
 import { OrderStatus } from '@jong_ecommerce/common';
 import { app } from './../../app';
 import request from 'supertest';
-import { producerSingleton } from './../../producerSingleton';
+import { natsConnector } from '../../nats-connector';
 
 it('marks Cancelled object', async () => {
   let cookie = (await global.signin())[0];
   // create product
 
   const saveProduct = Product.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     amount: 2,
     title: 'product1',
     price: 10,
     userId: 'some user',
-    version: 0,
+    // version: 0,
   });
   await saveProduct.save();
 
@@ -47,11 +48,12 @@ it('publishes order-cancelled event', async () => {
   const cookie = (await global.signin())[0];
   //  const id = "id";
   const saveProduct = Product.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     amount: 1,
     title: 'test',
     price: 10,
     userId: 'test',
-    version: 0,
+    // version: 0,
   });
   await saveProduct.save();
   // create an order
@@ -71,7 +73,5 @@ it('publishes order-cancelled event', async () => {
     .send({})
     .expect(204);
 
-  expect(producerSingleton.producer.connect).toHaveBeenCalled();
-  expect(producerSingleton.producer.send).toHaveBeenCalled();
-  expect(producerSingleton.producer.disconnect).toHaveBeenCalled();
+  expect(natsConnector.client.publish).toHaveBeenCalled();
 });

@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 // import { body } from 'express-validator';
 import { Product } from './../models/products';
 import { ProductUpdatedPublisher } from '../events/publishers/product-updated-publisher';
-import { producerSingleton } from './../producerSingleton';
+import { natsConnector } from '../nats-connector';
 
 import {
   setCurrentUser,
@@ -55,10 +55,7 @@ router.put(
 
     await product.save();
 
-    const producer = new ProductUpdatedPublisher(
-      producerSingleton.producer,
-      producerSingleton.adminClient
-    );
+    const producer = new ProductUpdatedPublisher(natsConnector.client);
 
     await producer.publish({
       id: product.id,

@@ -4,9 +4,11 @@ import {
   requireAuth,
   NotAuthorizedError,
   NotFoundError,
+  OrderStatus,
 } from '@jong_ecommerce/common';
 import { Order } from './../models/orders';
 import { Product } from './../models/products';
+import { isNamedExportBindings } from 'typescript';
 // import mongoose from 'mongoose';
 
 const router = express.Router();
@@ -24,6 +26,21 @@ router.get(
       status: 'success',
       data: allOrders,
     });
+  }
+);
+
+router.get(
+  '/api/orders/paid',
+  setCurrentUser,
+  requireAuth,
+  async (req: Request, res: Response) => {
+    const userId = req.currentUser!.id;
+    const paidOrders = await Order.find({
+      userId,
+      status: OrderStatus.Complete,
+    });
+
+    res.status(200).send(paidOrders);
   }
 );
 

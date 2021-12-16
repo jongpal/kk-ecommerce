@@ -3,22 +3,20 @@ import {
   OrderCancelledEvent,
   OrderStatus,
 } from '@jong_ecommerce/common';
-import { Product } from '../../models/products';
+import { Product } from './../../models/products';
 import mongoose from 'mongoose';
-import { Message } from 'kafkajs';
-
-import { Consumers } from '../../consumer';
-import { producerSingleton } from '../../producerSingleton';
+import { Message } from 'node-nats-streaming';
+import { natsConnector } from './../../nats-connector';
 import { OrderCreatedListener } from '../listeners/order-created-listener';
 import { OrderCancelledListener } from '../listeners/order-cancelled-listener';
 
 const setup = async () => {
-  const listener = new Consumers();
+  const listener = natsConnector.client;
 
   const product = Product.build({
-    title: 'product',
+    title: 'test ticket',
     price: 10,
-    description: 'test',
+    description: 'descr',
     amount: 2,
     userId: new mongoose.Types.ObjectId().toHexString(),
   });
@@ -30,46 +28,54 @@ const setup = async () => {
     amount: 2,
     expiresAt: new Date().toISOString(),
     userId: new mongoose.Types.ObjectId().toHexString(),
+    // version : 1,
     product: {
       id: product.id,
       price: product.price,
     },
   };
 
-  const cancellValue: OrderCancelledEvent['value'] = {
+  const cancellData: OrderCancelledEvent['value'] = {
     id: value.id,
     status: OrderStatus.Cancelled,
     amount: 2,
-    userId: value.userId,
+    userId: new mongoose.Types.ObjectId().toHexString(),
+    // version : 2,
     product: {
       id: product.id,
     },
   };
   //@ts-ignore
-  const msg: Message = {};
-  return { product, cancellValue, value, msg, listener };
+  const msg: Message = {
+    ack: jest.fn(),
+  };
+
+  return { product, cancellData, value, msg, listener };
 };
 
-it('test product locking mechanism', async () => {
-  // consumer mocking mechanism
-  const { cancellValue, value, msg, listener } = await setup();
-  await new OrderCreatedListener(listener.consumer).onMessage(value, msg);
-  // create product
+it('emulates a creation of order created/cancelled event and check ack and check the functioning of order created event', async () => {
+  const { cancellData, value, msg, listener } = await setup();
+  await new OrderCreatedListener(listener).onMessage(value, msg);
+  expect(msg.ack).toHaveBeenCalled();
   const product = await Product.findById(value.product.id);
-
-  // check if product is updated
   expect(product!.amount).toEqual(0);
-  expect(producerSingleton.producer.send).toHaveBeenCalled();
 
-  // order cancell event
-  await new OrderCancelledListener(listener.consumer).onMessage(
-    cancellValue,
-    msg
+  // expect(product!.version).toEqual(1);
+  expect(natsConnector.client.publish).toHaveBeenCalled();
+
+  let productUpdatedData = JSON.parse(
+    (natsConnector.client.publish as jest.Mock).mock.calls[0][1]
   );
-  const pdt = await Product.findById(cancellValue.product.id);
-  // check if product is updated
-  expect(pdt!.amount).toEqual(2);
-  expect(producerSingleton.producer.send).toHaveBeenCalled();
-});
 
-// it.todo('test product locking mechanism');
+  await new OrderCancelledListener(listener).onMessage(cancellData, msg);
+  expect(msg.ack).toHaveBeenCalled();
+  const ccProduct = await Product.findById(cancellData.product.id);
+  expect(ccProduct!.amount).toEqual(2);
+  // expect(ccProduct!.version).toEqual(2);
+  expect(natsConnector.client.publish).toHaveBeenCalled();
+
+  productUpdatedData = JSON.parse(
+    (natsConnector.client.publish as jest.Mock).mock.calls[1][1]
+  );
+  expect(productUpdatedData.id).toEqual(cancellData.product.id);
+});

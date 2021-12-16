@@ -4,15 +4,17 @@ import {
   OrderCancelledEvent,
   Topics,
 } from '@jong_ecommerce/common';
-import { Message } from 'kafkajs';
+import { Message } from 'node-nats-streaming';
 import { Product } from './../../models/products';
-import { CONSUMER_CANCELL_GROUP_ID } from '../group-info/group-id';
+// import { CONSUMER_CANCELL_GROUP_ID } from '../group-info/group-id';
+import { CONSUMER_CREATE_GROUP_ID } from '../group-info/group-id';
 import { ProductUpdatedPublisher } from '../publishers/product-updated-publisher';
-import { producerSingleton } from '../../producerSingleton';
+import { natsConnector } from '../../nats-connector';
 
 export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
   readonly topic = Topics.OrderCancelled;
-  groupId = CONSUMER_CANCELL_GROUP_ID;
+  // queueGroupName = CONSUMER_CANCELL_GROUP_ID;
+  queueGroupName = CONSUMER_CREATE_GROUP_ID;
 
   async onMessage(value: OrderCancelledEvent['value'], msg: Message) {
     const {
@@ -24,6 +26,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     const product = await Product.findById(id);
 
     if (!product) {
+      msg.ack();
       throw new NotFoundError();
     }
 
@@ -32,10 +35,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     // product.orderId = undefined;
     await product.save();
 
-    await new ProductUpdatedPublisher(
-      producerSingleton.producer,
-      producerSingleton.adminClient
-    ).publish({
+    await new ProductUpdatedPublisher(natsConnector.client).publish({
       id: product.id,
       title: product.title,
       price: product.price,
@@ -43,5 +43,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
       userId: product.userId,
       amount: product.amount,
     });
+
+    msg.ack();
   }
 }

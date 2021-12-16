@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import { Product } from '../../models/products';
-import { producerSingleton } from './../../producerSingleton';
+import { natsConnector } from './../../nats-connector';
 
 it('fails if not authenticated user tries to create a product', async () => {
   const response = await request(app).post('/api/products').send({
@@ -97,7 +97,5 @@ it('publishes product-created event', async () => {
       amount: 2,
     })
     .expect(201); // RequestValidationError
-  expect(producerSingleton.producer.connect).toHaveBeenCalled();
-  expect(producerSingleton.producer.send).toHaveBeenCalled();
-  expect(producerSingleton.producer.disconnect).toHaveBeenCalled();
+  expect(natsConnector.client.publish).toHaveBeenCalled();
 });

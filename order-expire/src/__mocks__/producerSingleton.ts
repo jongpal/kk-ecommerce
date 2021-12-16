@@ -1,5 +1,6 @@
 import { Topics } from '@jong_ecommerce/common';
 import { ITopicConfig } from 'kafkajs';
+
 export const producerSingleton = {
   producer: {
     connect: jest.fn(),

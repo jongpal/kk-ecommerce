@@ -6,8 +6,9 @@ import jwt from 'jsonwebtoken';
 
 let mongo: any;
 
-jest.mock('../producerSingleton');
-jest.mock('../consumerSingleton');
+jest.mock('../nats-connector');
+// jest.mock('../producerSingleton');
+// jest.mock('../consumerSingleton');
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'jwt-key';

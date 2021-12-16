@@ -1,0 +1,31 @@
+{
+  "name": "order-expire",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev --poll src/index.ts",
+    "test": "jest --watchAll --no-cache"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@jong_ecommerce/common": "^1.0.33",
+    "@types/bull": "^3.15.7",
+    "bull": "^4.1.4",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "ts-jest": "^27.0.7"
+  }
+}

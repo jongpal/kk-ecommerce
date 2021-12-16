@@ -1,7 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { Product } from './../models/products';
 
-import { NotFoundError } from '@jong_ecommerce/common';
+import {
+  NotFoundError,
+  setCurrentUser,
+  requireAuth,
+} from '@jong_ecommerce/common';
 
 const router = express.Router();
 
@@ -38,6 +42,18 @@ router.get(
     }
 
     res.status(200).send(product);
+  }
+);
+
+// specific users' product lists
+router.get(
+  '/api/products/:userId',
+  setCurrentUser,
+  requireAuth,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const products = await Product.find({ userId: req.params.userId });
+
+    res.status(200).send(products);
   }
 );
 

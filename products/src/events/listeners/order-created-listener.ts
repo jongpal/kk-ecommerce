@@ -4,15 +4,15 @@ import {
   OrderCreatedEvent,
   Topics,
 } from '@jong_ecommerce/common';
-import { Message } from 'kafkajs';
+import { Message } from 'node-nats-streaming';
 import { Product } from './../../models/products';
 import { CONSUMER_CREATE_GROUP_ID } from '../group-info/group-id';
 import { ProductUpdatedPublisher } from '../publishers/product-updated-publisher';
-import { producerSingleton } from '../../producerSingleton';
+import { natsConnector } from '../../nats-connector';
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   readonly topic = Topics.OrderCreated;
-  groupId = CONSUMER_CREATE_GROUP_ID;
+  queueGroupName = CONSUMER_CREATE_GROUP_ID;
 
   async onMessage(value: OrderCreatedEvent['value'], msg: Message) {
     const {
@@ -24,6 +24,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     const product = await Product.findById(id);
 
     if (!product) {
+      msg.ack();
       throw new NotFoundError();
     }
     product.amount -= orderAmount;
@@ -31,10 +32,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
     await product.save();
 
-    await new ProductUpdatedPublisher(
-      producerSingleton.producer,
-      producerSingleton.adminClient
-    ).publish({
+    await new ProductUpdatedPublisher(natsConnector.client).publish({
       id: product.id,
       title: product.title,
       price: product.price,
@@ -42,5 +40,6 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       userId: product.userId,
       amount: product.amount,
     });
+    msg.ack();
   }
 }

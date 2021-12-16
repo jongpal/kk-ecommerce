@@ -10,32 +10,33 @@ import {
 import { body } from 'express-validator';
 import { Order } from '../models/orders';
 import { Product } from '../models/products';
-import { producerSingleton } from '../producerSingleton';
-// import { consumerSingleton } from '../consumerSingleton';
+import { natsConnector } from '../nats-connector';
 import { OrderCreatedPublisher } from '../events/order-created-publisher';
 import mongoose from 'mongoose';
 
 const router = express.Router();
-const EXPIRATION_WINDOW_SECONDS = 20; //15 * 60;
+const EXPIRATION_WINDOW_SECONDS = 60; //15 * 60;
 
 router.post(
   '/api/orders',
   setCurrentUser,
   requireAuth,
-  body('productId')
-    .not()
-    .isEmpty()
-    .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-    .withMessage('proper product id should be provided'),
-  validateRequest,
+  // body('productId')
+  //   .not()
+  //   .isEmpty()
+  //   .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
+  //   .withMessage('proper product id should be provided'),
+  // validateRequest,
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.currentUser!.id;
     let amount;
     const { productId } = req.body;
-
+    // console.log(`create router received product : ${productId}`);
     amount = req.body.amount === undefined ? 1 : req.body.amount;
 
-    const product = await Product.findById(productId);
+    const product = await Product.findById(
+      new mongoose.Types.ObjectId(productId)
+    );
 
     if (!product) return next(new NotFoundError());
 
@@ -49,6 +50,7 @@ router.post(
     expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
     // set new order
+
     const newOrder = await Order.build({
       userId,
       status: OrderStatus.Created,
@@ -58,10 +60,7 @@ router.post(
     });
     await newOrder.save();
 
-    const publisher = new OrderCreatedPublisher(
-      producerSingleton.producer,
-      producerSingleton.adminClient
-    );
+    const publisher = new OrderCreatedPublisher(natsConnector.client);
 
     await publisher.publish({
       id: newOrder.id,

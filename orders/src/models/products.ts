@@ -70,6 +70,7 @@ productSchema.methods.isReserved = function (orderAmount: number) {
 
 productSchema.statics.build = (attrs: ProductAttrs) => {
   return new Product({
+    // _id: new mongoose.Types.ObjectId(attrs.id),
     _id: attrs.id,
     title: attrs.title,
     price: attrs.price,

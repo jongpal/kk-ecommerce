@@ -2,7 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import mongoose from 'mongoose';
 // import { Product } from '../../models/products';
-import { producerSingleton } from './../../producerSingleton';
+import { natsConnector } from '../../nats-connector';
 
 const createTicket = async (
   title: string = 'product1',
@@ -141,9 +141,7 @@ it('publishes product-updated event', async () => {
       amount: 2,
     })
     .expect(200); // RequestValidationError
-  expect(producerSingleton.producer.connect).toHaveBeenCalled();
-  expect(producerSingleton.producer.send).toHaveBeenCalled();
-  expect(producerSingleton.producer.disconnect).toHaveBeenCalled();
+  expect(natsConnector.client.publish).toHaveBeenCalled();
 });
 
 it.todo('reject if the product is reserved');

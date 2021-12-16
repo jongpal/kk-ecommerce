@@ -4,7 +4,7 @@ import { Product } from './../../models/products';
 import { OrderStatus } from '@jong_ecommerce/common';
 import { app } from './../../app';
 import request from 'supertest';
-import { producerSingleton } from './../../producerSingleton';
+import { natsConnector } from './../../nats-connector';
 
 it('returns NotFoundError if the product is not there', async () => {
   const productId = new mongoose.Types.ObjectId();
@@ -24,11 +24,12 @@ it('returns 400 if the order is occupied', async () => {
   const cookie = (await global.signin())[0];
   //  const id = "id";
   const saveProduct = Product.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     amount: 1,
     title: 'test',
     price: 10,
     userId: 'test',
-    version: 0,
+    // version: 0,
   });
   await saveProduct.save();
   // const order = Order.build({
@@ -62,11 +63,12 @@ it('publishes order-created event', async () => {
   const cookie = (await global.signin())[0];
   //  const id = "id";
   const saveProduct = Product.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     amount: 1,
     title: 'test',
     price: 10,
     userId: 'test',
-    version: 0,
+    // version: 0,
   });
   await saveProduct.save();
   // hit createRouter and see if event publisher invoked
@@ -78,7 +80,5 @@ it('publishes order-created event', async () => {
       productId: saveProduct.id,
     })
     .expect(201); // RequestValidationError
-  expect(producerSingleton.producer.connect).toHaveBeenCalled();
-  expect(producerSingleton.producer.send).toHaveBeenCalled();
-  expect(producerSingleton.producer.disconnect).toHaveBeenCalled();
+  expect(natsConnector.client.publish).toHaveBeenCalled();
 });
