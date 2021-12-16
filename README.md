@@ -25,7 +25,10 @@ npm install
 
 ```
 kubectl create secret generic jwt-secrets -—from-literal=JWT_KEY=asdf
-Stripe secret 도 추가
+```
+stripe 키도 추가 (카톡)
+```
+kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=<key>
 ```
 
 5. **skaffold.yaml 있는 path에서**
