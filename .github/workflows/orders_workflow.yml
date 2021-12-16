@@ -63,6 +63,7 @@ jobs:
           kubectl apply -f orders_deployment.yaml
           kubectl rollout status deployment/$ORDERS
           kubectl get services -o wide
+          kubectl apply -f orders_autoscale.yaml
 
 
 

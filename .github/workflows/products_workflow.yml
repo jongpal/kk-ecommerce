@@ -63,6 +63,7 @@ jobs:
           kubectl apply -f products_deployment.yaml
           kubectl rollout status deployment/$PRODUCTS
           kubectl get services -o wide
+          kubectl apply -f products_autoscale.yaml
 
 
 

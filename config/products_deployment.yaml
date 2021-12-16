@@ -21,13 +21,24 @@ spec:
         - name: products
           image: "gcr.io/chabunsi-project/products"
           env:
+            - name: KAFKA_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKA_ADMIN_ID
+              value: 'kafka-admin'
+            - name: BROKER_1
+              value: 'kafka-service:9092'
             - name: MONGO_URI
-              value: 'mongodb://mongo:27017/products'
+              value: 'mongodb://mongo-srv:27017/products'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secrets
                   key: JWT_KEY
+          resources:
+            requests:
+              cpu: "250m"
 ---
 apiVersion: v1
 kind: Service
