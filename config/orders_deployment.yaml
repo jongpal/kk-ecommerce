@@ -20,6 +20,35 @@ spec:
       containers:
         - name: orders
           image: "gcr.io/chabunsi-project/orders"
+          env:
+            - name: KAFKA_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KAFKA_ADMIN_ID
+              value: 'kafka-admin'
+            - name: BROKER_1
+              value: 'kafka-service:9092'
+            - name: MONGO_URI
+              value: 'mongodb://orders-mongo-srv:27017/orders'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: JWT_KEY
           resources:
             requests:
-              cpu: "200m"
+              cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-srv
+spec:
+  selector:
+    app: orders
+  ports:
+    - name: orders
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

@@ -30,7 +30,7 @@ spec:
                   key: JWT_KEY
           resources:
             requests:
-              cpu: "200m"
+              cpu: "250m"
 ---
 apiVersion: v1
 kind: Service
