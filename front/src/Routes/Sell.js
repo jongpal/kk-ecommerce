@@ -2,14 +2,7 @@ import { useNavigate } from 'react-router';
 import Header from '../Components/Header';
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
-
-const MainTitle = styled.h1`
-  font-weight:bold;
-  font-size:35px;
-  color:#b464eb;
-`;
 
 function Sell() {
   const navigate = useNavigate();
@@ -37,7 +30,7 @@ function Sell() {
     //   console.log(`title=${title}`);
     //   console.log(`price=${price}`);
     //   console.log(`amount=${amount}`);
-    //   await axios.post('https://localhost:3000/api/products',{
+    //   await axios.post('https://localhost:3001/api/products',{
     //     title : title,
     //     price : price,
     //     description : amount
@@ -52,20 +45,12 @@ function Sell() {
     // });
     //   alert("등록 완료");
     // }
-    if(title.length>0 && price>0 && amount>0){
-      console.log(`title=${title}`);
-      console.log(`price=${price}`);
-      console.log(`amount=${amount}`);
-      alert("등록 완료");
-    }else{
-      alert("정확한 값을 입력해 주세요");
-    }
+    alert("등록 완료");
   }
 
   return(
     <>
     <Header />
-    <MainTitle>판매 등록</MainTitle>
     <div>
         Sell<br />
         title<br />
