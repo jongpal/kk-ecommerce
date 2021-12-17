@@ -3,7 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from 'react';
 import { goLogin } from '../Reducers/user';
 import Header from '../Components/Header';
+import styled from 'styled-components';
 import axios from 'axios';
+
+const MainTitle = styled.h1`
+  font-weight:bold;
+  font-size:35px;
+  color:#b464eb;
+`;
 
 function Login() {
   const navigate = useNavigate();
@@ -22,7 +29,7 @@ function Login() {
   }
 
   const loginClick =async()=>{
-    await axios.post('http://35.200.45.35/api/users/signin',{
+    await axios.post('http://localhost:3000/api/users/signin',{
       email:Id,
       password:Pw
     },{withCredentials:true})
@@ -34,12 +41,12 @@ function Login() {
         alert("login error");
       }
     });
-    // dispatch(goLogin(Id));
-    // navigate('/home');
+    dispatch(goLogin(Id));
+    navigate('/home');
   }
 
-  const signinClick = async()=>{
-    await axios.post('http://35.200.45.35/api/users/signup',{
+  const signupClick = async()=>{
+    await axios.post('http://localhost:3000/api/users/signup',{
       email:Id,
       password:Pw
     },{withCredentials:true})
@@ -56,13 +63,14 @@ function Login() {
   return(
     <>
     <Header />
+    <MainTitle>로그인 및 회원 가입</MainTitle>
     <div>
       ID
       <input onChange = {IdChange}></input>
       PW
       <input onChange = {PwChange} type='password'></input>
-      <button onClick = {loginClick}>login</button>
-      <button onClick = {signinClick}>signUp</button>
+      <button onClick = {loginClick}>sign in</button>
+      <button onClick = {signupClick}>sign Up</button>
     </div>
     </>
     );
