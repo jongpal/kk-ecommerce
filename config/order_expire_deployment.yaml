@@ -39,3 +39,6 @@ spec:
             #   value: 'kafka-service:9092'
             - name: REDIS_HOST
               value: order-expire-redis-srv
+          resources:
+            requests:
+              cpu: "250m"

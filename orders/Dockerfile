@@ -3,7 +3,7 @@ FROM node:alpine
 WORKDIR /app
 COPY package.json .
 
-# CHECK CI
+# CHECK CI_
 # RUN npm run ci
 
 RUN npm install --only=prod
