@@ -32,7 +32,7 @@ function Buy() {
     axios.get('http://localhost:3000/api/users/currentuser',{withCredentials:true})
     .then((response)=>{
       if(response.currentUser){
-        
+        console.log(response.currentUser);
       }else{
         alert("user error");
       }
