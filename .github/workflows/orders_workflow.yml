@@ -61,7 +61,7 @@ jobs:
         run: |-
           cd config
           kubectl apply -f orders_deployment.yaml
-          kubectl rollout status deployment/order-depl
+          kubectl rollout status deployment/orders-depl
           kubectl get services -o wide
           kubectl apply -f orders_autoscale.yaml
 
