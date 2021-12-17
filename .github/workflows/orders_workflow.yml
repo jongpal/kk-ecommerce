@@ -3,6 +3,8 @@ name: Orders Deploy to Google
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "orders/**"
 

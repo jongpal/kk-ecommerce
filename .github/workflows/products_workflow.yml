@@ -3,6 +3,8 @@ name: Products Deploy to Google
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "products/**"
 

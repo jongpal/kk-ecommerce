@@ -3,8 +3,11 @@ name: Auth Deploy to Google
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "auth/**"
+
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}

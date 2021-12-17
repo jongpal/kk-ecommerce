@@ -3,6 +3,8 @@ name: Order Expire Deploy to Google
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "order-expire/**"
 

@@ -3,6 +3,8 @@ name: Payments Deploy to Google
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "products/**"
 
