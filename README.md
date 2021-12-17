@@ -26,7 +26,9 @@ npm install
 ```
 kubectl create secret generic jwt-secrets -—from-literal=JWT_KEY=asdf
 ```
+
 stripe 키도 추가 (카톡)
+
 ```
 kubectl create secret generic stripe-secret --from-literal=STRIPE_KEY=<key>
 ```
