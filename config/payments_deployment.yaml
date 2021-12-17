@@ -1,30 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: products-depl
+  name: payments-depl
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: products
-  replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+      app: payments
   template:
     metadata:
       labels:
-        app: products
+        app: payments
     spec:
       containers:
-        - name: products
-          image: "gcr.io/chabunsi-project/products"
+        - name: payments
+          image: "gcr.io/chabunsi-project/payments"
           env:
             - name: NATS_URL
-              value: http://nats-srv:4222
+              value: 'http://nats-srv:4222'
             - name: NATS_CLUSTER_ID
               value: chabunsi-ecommerce
+              # for logging purposes, meaningful Client id(not just random)
             - name: NATS_CLIENT_ID
               valueFrom:
                 fieldRef:
@@ -33,17 +29,22 @@ spec:
             #   valueFrom:
             #     fieldRef:
             #       fieldPath: metadata.name
-            # - name: KAFKA_ADMIN_ID
-            #   value: 'kafka-admin'
-            # - name: BROKER_1
-            #   value: 'kafka-service:9092'
+            # # - name: KAFKA_ADMIN_ID
+            # #   value: 'kafka-admin'
+            # # - name: BROKER_1
+            # #   value: 'kafka-service:9092'
             - name: MONGO_URI
-              value: 'mongodb://products-mongo-srv:27017/products'
+              value: 'mongodb://payments-mongo-srv:27017/payments'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: jwt-secrets
                   key: JWT_KEY
+            - name: STRIPE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: STRIPE_KEY
           resources:
             requests:
               cpu: "250m"
@@ -51,12 +52,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: products-srv
+  name: payments-srv
 spec:
   selector:
-    app: products
+    app: payments
   ports:
-    - name: products
+    - name: payments
       protocol: TCP
       port: 3000
       targetPort: 3000

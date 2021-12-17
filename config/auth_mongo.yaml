@@ -1,16 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: auth-mongo-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-depl
+  name: auth-mongo-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo
+      app: auth-mongo
   template:
     metadata:
       labels:
-        app: mongo
+        app: auth-mongo
     spec:
       containers:
         - name: mongo
@@ -46,15 +58,15 @@ spec:
       volumes:
         - name: mongo-data-dir
           persistentVolumeClaim:
-            claimName: pvc
+            claimName: auth-mongo-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-srv
+  name: auth-mongo-srv
 spec:
   selector:
-    app: mongo
+    app: auth-mongo
   ports:
     - name: userdb
       protocol: TCP

@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: auth-autoscale
+  name: order-expire-autoscale
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: auth-depl
+    name: order-expire-depl
   minReplicas: 1
   maxReplicas: 3
   metrics:

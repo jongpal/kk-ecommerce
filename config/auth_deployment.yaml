@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth
+  name: auth-depl
 spec:
   selector:
     matchLabels:
@@ -22,7 +22,7 @@ spec:
           image: "gcr.io/chabunsi-project/auth"
           env:
             - name: MONGO_URI
-              value: "mongodb://mongo-srv:27017/auth"
+              value: "mongodb://auth-mongo-srv:27017/auth"
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:

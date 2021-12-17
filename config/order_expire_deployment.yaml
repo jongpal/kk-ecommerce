@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: products-depl
+  name: order-expire-depl
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: products
-  replicas: 1
+      app: order-expire
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -15,14 +15,14 @@ spec:
   template:
     metadata:
       labels:
-        app: products
+        app: order-expire
     spec:
       containers:
-        - name: products
-          image: "gcr.io/chabunsi-project/products"
+        - name: order-expire
+          image: "gcr.io/chabunsi-project/order_expire"
           env:
             - name: NATS_URL
-              value: http://nats-srv:4222
+              value: 'http://nats-srv:4222'
             - name: NATS_CLUSTER_ID
               value: chabunsi-ecommerce
             - name: NATS_CLIENT_ID
@@ -37,26 +37,8 @@ spec:
             #   value: 'kafka-admin'
             # - name: BROKER_1
             #   value: 'kafka-service:9092'
-            - name: MONGO_URI
-              value: 'mongodb://products-mongo-srv:27017/products'
-            - name: JWT_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: jwt-secrets
-                  key: JWT_KEY
+            - name: REDIS_HOST
+              value: order-expire-redis-srv
           resources:
             requests:
               cpu: "250m"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: products-srv
-spec:
-  selector:
-    app: products
-  ports:
-    - name: products
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
