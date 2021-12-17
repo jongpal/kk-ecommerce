@@ -61,7 +61,7 @@ jobs:
         run: |-
           cd config
           kubectl apply -f payments_deployment.yaml
-          kubectl rollout status deployment/$PRODUCTS
+          kubectl rollout status deployment/$PAYMENTS
           kubectl get services -o wide
           kubectl apply -f payments_autoscale.yaml
 

@@ -45,6 +45,9 @@ spec:
                 secretKeyRef:
                   name: stripe-secret
                   key: STRIPE_KEY
+          resources:
+            requests:
+              cpu: "250m"
 ---
 apiVersion: v1
 kind: Service
