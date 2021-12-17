@@ -4,7 +4,7 @@ name: Order Expire Deploy to Google
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "order-expire/**"
 
