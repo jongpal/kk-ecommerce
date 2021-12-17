@@ -61,7 +61,7 @@ jobs:
         run: |-
           cd config
           kubectl apply -f products_deployment.yaml
-          kubectl rollout status deployment/$PRODUCTS
+          kubectl rollout status deployment/products-depl
           kubectl get services -o wide
           kubectl apply -f products_autoscale.yaml
 

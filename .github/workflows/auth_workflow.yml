@@ -61,7 +61,7 @@ jobs:
         run: |-
           cd config
           kubectl apply -f auth_deployment.yaml
-          kubectl rollout status deployment/$AUTH
+          kubectl rollout status deployment/auth-depl
           kubectl get services -o wide
           kubectl apply -f auth_autoscale.yaml
 

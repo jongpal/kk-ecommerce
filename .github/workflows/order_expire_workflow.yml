@@ -61,7 +61,7 @@ jobs:
         run: |-
           cd config
           kubectl apply -f order_expire_deployment.yaml
-          kubectl rollout status deployment/$ORDER_EXPIRE
+          kubectl rollout status deployment/order-expire-depl
           kubectl get services -o wide
           kubectl apply -f order_expire_autoscale.yaml
 
