@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: orders_mongo_pvc
+  name: orders-mongo-pvc
 spec:
   storageClassName: standard
   accessModes:
@@ -58,7 +58,7 @@ spec:
       volumes:
         - name: mongo-data-dir
           persistentVolumeClaim:
-            claimName: orders_mongo_pvc
+            claimName: orders-mongo-pvc
 ---
 apiVersion: v1
 kind: Service
