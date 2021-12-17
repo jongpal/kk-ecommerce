@@ -4,7 +4,7 @@ name: Orders Deploy to Google
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - "orders/**"
 
