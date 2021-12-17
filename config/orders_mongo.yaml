@@ -1,16 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: orders_mongo_pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-depl
+  name: orders-mongo-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo
+      app: orders-mongo
   template:
     metadata:
       labels:
-        app: mongo
+        app: orders-mongo
     spec:
       containers:
         - name: mongo
@@ -46,15 +58,15 @@ spec:
       volumes:
         - name: mongo-data-dir
           persistentVolumeClaim:
-            claimName: pvc
+            claimName: orders_mongo_pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-srv
+  name: orders-mongo-srv
 spec:
   selector:
-    app: mongo
+    app: orders-mongo
   ports:
     - name: userdb
       protocol: TCP

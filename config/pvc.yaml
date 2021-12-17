@@ -1,12 +1,29 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-volume
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /test
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc
 spec:
-  storageClassName: ""
+  storageClassName: standard
   accessModes:
     - ReadWriteOnce
-  volumeName: pv
   resources:
     requests:
       storage: 10Gi
+---
+
+
+
+# gcloud compute disks create --size=200GB --zone=asia-northeast1-a mongodb-data-disk
